@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>ScrumServiceFSharp</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Models\Department.fs" />
+        <Compile Include="Services\DepartmentService.fs" />
+        <Compile Include="Controllers\DepartmentsController.fs" />
+        <Compile Include="Program.fs"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.201.14" />
+    </ItemGroup>
+
+</Project>
