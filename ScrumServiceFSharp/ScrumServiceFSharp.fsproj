@@ -6,9 +6,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="HelperTypes.fs" />
+        <Compile Include="AttributeValueHelper.fs" />
         <Compile Include="Models\Department.fs" />
-        <Compile Include="Services\DepartmentService.fs" />
+        <Compile Include="Models\ScrumOrganization.fs" />
+        <Compile Include="Services\DynamoDbService.fs" />
         <Compile Include="Controllers\DepartmentsController.fs" />
+        <Compile Include="Controllers\ScrumOrganizationController.fs" />
         <Compile Include="Program.fs"/>
     </ItemGroup>
 

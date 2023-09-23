@@ -5,4 +5,4 @@ type Department = {
     Name: string
 }
 
-type departmentList = Department list
+type DepartmentList = Department list
