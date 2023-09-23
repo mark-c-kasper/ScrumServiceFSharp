@@ -40,31 +40,27 @@ type ScrumOrganizationController (logger : ILogger<ScrumOrganizationController>)
         }
 
     [<HttpPost(Name="CreateScrumOrganization")>]
-    member this.CreateScrumOrganizationAsync([<FromBody>] newScrumOrganization: ScrumOrganizationParam) =
+    member this.CreateScrumOrganizationAsync([<FromBody>] newScrumOrganization: ScrumOrganization) =
         async {
-            let scrumOrganization = ScrumOrganization.convertParam newScrumOrganization
-            
             let dict = Dictionary<string, AttributeValue>()
-            dict.Add("Id", AttributeValue(s = scrumOrganization.Id.ToString()))
-            dict.Add("Name", AttributeValue(s = scrumOrganization.Name.ToString()))
+            dict.Add("Id", AttributeValue(s = newScrumOrganization.Id.ToString()))
+            dict.Add("Name", AttributeValue(s = newScrumOrganization.Name.ToString()))
             
             let putItemRequest = PutItemRequest(scrumOrganizationsTableName, dict)
-            let! putItemResponse = putItemInDynamoDb putItemRequest
+            do! putItemInDynamoDbAsync putItemRequest
             
             return NoContentResult() :> IActionResult
         }
         
     [<HttpPut(Name="UpdateScrumOrganization")>]
-    member this.UpdateScrumOrganizationAsync([<FromBody>] updatingScrumOrganization: ScrumOrganizationParam) =
+    member this.UpdateScrumOrganizationAsync([<FromBody>] updatingScrumOrganization: ScrumOrganization) =
         async {
-            let scrumOrganization = ScrumOrganization.convertParam updatingScrumOrganization
-            
             let dict = Dictionary<string, AttributeValue>()
-            dict.Add("Id", AttributeValue(scrumOrganization.Id.ToString()))
-            dict.Add("Name", AttributeValue(scrumOrganization.Name.ToString()))
+            dict.Add("Id", AttributeValue(updatingScrumOrganization.Id.ToString()))
+            dict.Add("Name", AttributeValue(updatingScrumOrganization.Name.ToString()))
             
             let putItemRequest = PutItemRequest(scrumOrganizationsTableName, dict)
-            let! putItemResponse = putItemInDynamoDb putItemRequest
+            do! putItemInDynamoDbAsync putItemRequest
             
             return NoContentResult() :> IActionResult
         }

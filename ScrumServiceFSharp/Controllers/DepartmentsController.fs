@@ -46,7 +46,7 @@ type DepartmentsController (logger : ILogger<DepartmentsController>) =
             dict.Add("Name", AttributeValue(newDepartment.Name))
             
             let putItemRequest = PutItemRequest(departmentsTableName, dict)
-            let! putItemResponse = putItemInDynamoDb putItemRequest
+            let! putItemResponse = putItemInDynamoDbAsync putItemRequest
             
             return NoContentResult() :> IActionResult
         }
@@ -59,7 +59,7 @@ type DepartmentsController (logger : ILogger<DepartmentsController>) =
             dict.Add("Name", AttributeValue(newDepartment.Name))
             
             let putItemRequest = PutItemRequest(departmentsTableName, dict)
-            let! putItemResponse = putItemInDynamoDb putItemRequest
+            let! putItemResponse = putItemInDynamoDbAsync putItemRequest
             
             return NoContentResult() :> IActionResult
         }
