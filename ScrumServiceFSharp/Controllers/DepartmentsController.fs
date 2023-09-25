@@ -18,11 +18,13 @@ type DepartmentsController (logger : ILogger<DepartmentsController>) =
     [<HttpGet(Name="GetAllDepartments")>]
     member this.GetAllDepartmentsAsync() =
         async {
-            let mutable (departments: DepartmentList) = []
             let! scanResponse = scanDynamoDbTable departmentsTableName
-            for item in scanResponse.Items do
-                let department: DepartmentList = [{Id = item["Id"].S; Name = item["Name"].S}]
-                departments <- department @ departments
+            let (departments: DepartmentList) =
+                [
+                    for item in scanResponse.Items do
+                        let (department : Department) = {Id = item["Id"].S; Name = item["Name"].S}
+                        department
+                ]
             
             match departments with
             | [] -> return NoContentResult() :> IActionResult
@@ -46,7 +48,7 @@ type DepartmentsController (logger : ILogger<DepartmentsController>) =
             dict.Add("Name", AttributeValue(newDepartment.Name))
             
             let putItemRequest = PutItemRequest(departmentsTableName, dict)
-            let! putItemResponse = putItemInDynamoDbAsync putItemRequest
+            do! putItemInDynamoDbAsync putItemRequest
             
             return NoContentResult() :> IActionResult
         }
@@ -59,7 +61,7 @@ type DepartmentsController (logger : ILogger<DepartmentsController>) =
             dict.Add("Name", AttributeValue(newDepartment.Name))
             
             let putItemRequest = PutItemRequest(departmentsTableName, dict)
-            let! putItemResponse = putItemInDynamoDbAsync putItemRequest
+            do! putItemInDynamoDbAsync putItemRequest
             
             return NoContentResult() :> IActionResult
         }

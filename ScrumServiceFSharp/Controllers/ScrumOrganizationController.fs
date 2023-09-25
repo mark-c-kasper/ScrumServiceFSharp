@@ -19,11 +19,12 @@ type ScrumOrganizationController (logger : ILogger<ScrumOrganizationController>)
     [<HttpGet(Name="GetAllScrumOrganizations")>]
     member this.GetAllScrumOrganizationsAsync() =
         async {
-            let mutable (scrumOrganizationList: ScrumOrganizationList) = []
             let! scanResponse = scanDynamoDbTable scrumOrganizationsTableName
-            for item in scanResponse.Items do
-                let scrumOrganization: ScrumOrganizationList = [ScrumOrganization.create item]
-                scrumOrganizationList <- scrumOrganization @ scrumOrganizationList
+            let (scrumOrganizationList: ScrumOrganizationList) =
+                [
+                 for item in scanResponse.Items do
+                    ScrumOrganization.create item
+                ]
             
             match scrumOrganizationList with
             | [] -> return NoContentResult() :> IActionResult
